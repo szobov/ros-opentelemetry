@@ -1,0 +1,29 @@
+[build-system]
+requires = [
+    "setuptools==75.8.0",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ros_opentelemetry_py"
+version = "0.0.1"
+description = "ROS2 x OpenTelemetry Python"
+readme = "README.md"
+authors = [{name = "szobov", email = "sergey@szobov.ru"}]
+dependencies = [
+    "opentelemetry-api>=1.27.0",
+    "opentelemetry-exporter-otlp>=1.27.0",
+    "opentelemetry-sdk>=1.27.0",
+    "opentelemetry-semantic-conventions>=0.48b0",
+    "opentelemetry-resource-detector-container>=0.48b0",
+]
+
+
+license = {file = "LICENSE"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+
+[tool.uv.sources]
+opentelemetry-resource-detector-container = { git = "https://github.com/open-telemetry/opentelemetry-python-contrib.git", subdirectory = "resource/opentelemetry-resource-detector-container", tag = "v0.48b0" }

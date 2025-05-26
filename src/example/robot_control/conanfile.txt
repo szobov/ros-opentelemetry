@@ -1,0 +1,11 @@
+[requires]
+opentelemetry-cpp/1.21.0
+grpc/1.67.1
+
+[generators]
+CMakeDeps
+CMakeToolchain
+ROSEnv
+
+[options]
+opentelemetry-cpp/*:with_otlp_grpc=True

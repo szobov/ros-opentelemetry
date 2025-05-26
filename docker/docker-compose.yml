@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  example:
+    build:
+      context: ..
+      dockerfile: docker/example.Dockerfile
+      tags:
+        - latest
+    image: "ros-otel-example:latest"
+    container_name: ros-otel-example
+    environment:
+      - OTLP_ENDPOINT=host.docker.internal:4317
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    tty: true
+    network_mode: bridge
+

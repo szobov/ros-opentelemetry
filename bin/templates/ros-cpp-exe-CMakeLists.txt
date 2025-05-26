@@ -1,0 +1,24 @@
+cmake_minimum_required(VERSION 3.22)
+project(__PROJECT_NAME__)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+
+# Conan integration:
+# include(${CMAKE_BINARY_DIR}/conan_toolchain.cmake OPTIONAL)
+# find_package(fmt CONFIG REQUIRED) # example
+
+add_executable(${PROJECT_NAME} src/main.cpp)
+target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic)
+ament_target_dependencies(${PROJECT_NAME} rclcpp)
+
+# target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
+
+install(TARGETS ${PROJECT_NAME}
+  DESTINATION lib/${PROJECT_NAME})
+
+ament_package()
+

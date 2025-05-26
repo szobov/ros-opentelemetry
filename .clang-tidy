@@ -1,0 +1,7 @@
+Checks: >
+  bugprone-*,
+  clang-analyzer-*,
+  modernize-*,
+  performance-*,
+  readability-*
+WarningsAsErrors: bugprone-use-after-move

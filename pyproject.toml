@@ -1,0 +1,48 @@
+[project]
+name = "ros-opentelemetry-setup"
+version = "0.1.0"
+description = "Connecting ROS2 and OpenTelemetry"
+readme = "README.md"
+authors = [{name = "Sergei Zobov", email = "sergey at szobov.ru"}]
+
+
+requires-python = ">=3.12"
+
+
+dependencies = [
+    "catkin-pkg>=1.0.0",
+    "colcon-argcomplete>=0.3.3",
+    "colcon-bash>=0.5.0",
+    "colcon-cd>=0.1.1",
+    "colcon-cmake>=0.2.29",
+    "colcon-common-extensions>=0.3.0",
+    "colcon-core>=0.19.0",
+    "colcon-defaults>=0.2.9",
+    "colcon-devtools>=0.3.0",
+    "colcon-library-path>=0.2.1",
+    "colcon-metadata>=0.2.5",
+    "colcon-notification>=0.3.0",
+    "colcon-output>=0.2.13",
+    "colcon-package-information>=0.4.0",
+    "colcon-package-selection>=0.2.10",
+    "colcon-parallel-executor>=0.3.0",
+    "colcon-python-setup-py>=0.2.9",
+    "colcon-ros>=0.5.0",
+    "conan>=2.20.1",
+    "lark>=1.2.2",
+    "numpy>=2.3.1",
+    "rospkg>=1.6.0",
+    "setuptools==75.8.0",
+]
+
+[dependency-groups]
+dev = [
+    "cmake-language-server>=0.1.11",
+    "pyright>=1.1.401",
+    "ruff>=0.11.11",
+]
+
+[tool.uv.workspace]
+members = [
+    "src/ros_opentelemetry_py/ros_opentelemetry_py",
+]

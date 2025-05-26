@@ -1,0 +1,12 @@
+# Goal
+RobotTarget[] targets
+
+ros_opentelemetry_interfaces/TraceMetadata trace_metadata
+---
+# Result
+bool success
+bool[] targets_status
+---
+# Feedback
+uint32 current_target_id
+bool status
