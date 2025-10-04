@@ -1,11 +1,14 @@
+# Build the ROS2 workspace locally
 build-locally:
     WORKSPACE_PREFIX="local_" bin/build-locally.bash
 
+# Run linters and formatters on Python and C++ code
 check:
     ruff format --exit-non-zero-on-format
     ruff check --fix
     ./bin/run-cpp-linters.bash
 
+# Generate rosdep dependency list for reproducible builds
 generate-ros-dep-txt:
     @echo "Generating rosdep dependency list..."
     @temp_file="rosdep-deps.txt.tmp" && \
@@ -18,23 +21,29 @@ generate-ros-dep-txt:
         rm $$temp_file && echo "No changes to rosdep-deps.txt"; \
     fi
 
+# Setup Conan package manager for C++ dependencies
 setup-conan:
     conan profile detect --force
     conan remote update conancenter --url="https://center2.conan.io"
 
+# Build the ROS2 workspace in Docker environment
 build-docker:
     WORKSPACE_PREFIX="docker_" bin/build-locally.bash
 
+# Build example ROS2 application in Docker
 docker-build-example: generate-ros-dep-txt
     docker compose -f docker/docker-compose.yml up --build
 
+# Start telemetry services (SigNoz stack)
 docker-up-telemetry:
     PROJECT_ROOT="{{invocation_directory()}}" docker compose -f telemetry_services/telemetry/signoz/docker/docker-compose.yaml up -d
 
+# Run example with full telemetry stack (SigNoz + instrumented nodes)
 run-example-with-telemetry:
     chmod +x bin/run-with-telemetry.bash
     bin/run-with-telemetry.bash
 
+# Scaffold a new ROS2 Python package
 add-ros-python-package package path="src":
     @echo 'Adding a new python package {{ package }} in {{ path }}...'
     ros2 pkg create --destination-directory {{ path }} --build-type ament_python {{ package }}
@@ -44,6 +53,7 @@ add-ros-python-package package path="src":
     # TODO: fix templating
     PROJECT_NAME={{ package }} envsubst < bin/templates/ros-pyproject-toml.txt > {{ path }}/{{ package }}/pyproject.toml
 
+# Scaffold a new ROS2 C++ package (type: exe or lib)
 add-ros-cpp-package package type="exe" path="src":
     @echo 'Adding a new C++ package {{ package }} (type={{ type }}) in {{ path }}...'
     ros2 pkg create --destination-directory {{ path }} --build-type ament_cmake {{ package }}
