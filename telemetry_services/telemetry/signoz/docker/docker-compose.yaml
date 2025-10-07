@@ -142,6 +142,26 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
+  signoz-bootstrap-user:
+    image: python:3.11-slim
+    container_name: signoz-bootstrap-user
+    depends_on:
+      signoz:
+        condition: service_healthy
+    networks:
+      - signoz-net
+    environment:
+      - PYTHONUNBUFFERED=1
+      - SIGNOZ_BOOTSTRAP_BASE_URL=http://signoz:8080
+      - SIGNOZ_BOOTSTRAP_EMAIL=${SIGNOZ_BOOTSTRAP_EMAIL:-test@ros-opentelemetry}
+      - SIGNOZ_BOOTSTRAP_PASSWORD=${SIGNOZ_BOOTSTRAP_PASSWORD:-test-opentelemetry-123}
+      - SIGNOZ_BOOTSTRAP_NAME=${SIGNOZ_BOOTSTRAP_NAME:-ROS Telemetry Default}
+    volumes:
+      - ./bootstrap:/app:ro
+    command:
+      - python
+      - /app/bootstrap_signoz_user.py
+
   otel-collector:
     !!merge <<: *db-depend
     image: signoz/signoz-otel-collector:${OTELCOL_TAG:-v0.111.40}

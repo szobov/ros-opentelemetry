@@ -11,8 +11,10 @@ services:
     container_name: ros-otel-example
     environment:
       - OTLP_ENDPOINT=host.docker.internal:4317
+      - ROS_LOG_DIR=/workspace/docker_workspace/logs/ros
     extra_hosts:
       - "host.docker.internal:host-gateway"
     tty: true
     network_mode: bridge
-
+    volumes:
+      - ../logs/ros:/workspace/docker_workspace/logs/ros:rw

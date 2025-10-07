@@ -5,8 +5,17 @@ receivers:
         endpoint: 0.0.0.0:4317
       http:
         endpoint: 0.0.0.0:4318
+  hostmetrics:
+    collection_interval: 60s  # Frequency of metrics collection.
+    scrapers:
+      cpu: {}
+      load: {}
+      memory: {}
+      disk: {}
+      filesystem: {}
+      network: {}
   filelog:
-    include: [ "/opt/logs/*.log", "/opt/logs/*/*.log"]
+    include: ["/opt/logs/**/*.log"]
     start_at: end
     multiline:
       line_start_pattern: '^\[\w+\] \[\d+\.\d+\] \[.*\]:'  # To support cases when we output multiline json
@@ -47,7 +56,14 @@ processors:
   resourcedetection:
     # Using OTEL_RESOURCE_ATTRIBUTES envvar, env detector adds custom labels.
     detectors: [env, system]
+    system:
+      hostname_sources: [os]
     timeout: 2s
+  resource/env:
+    attributes:
+    - key: deployment.environment
+      value: staging
+      action: upsert
   signozspanmetrics/delta:
     metrics_exporter: clickhousemetricswrite
     metrics_flush_interval: 60s
@@ -118,3 +134,7 @@ service:
       receivers: [otlp, filelog]
       processors: [batch]
       exporters: [clickhouselogsexporter]
+    metrics/hostmetrics:
+      receivers: [hostmetrics]
+      processors: [resourcedetection, resource/env]
+      exporters: [clickhousemetricswrite]

@@ -1,6 +1,9 @@
 build-locally:
     WORKSPACE_PREFIX="local_" bin/build-locally.bash
 
+build-in-docker:
+    WORKSPACE_PREFIX="docker_" bin/build-locally.bash
+
 check:
     ruff format --exit-non-zero-on-format
     ruff check --fix
@@ -22,18 +25,11 @@ setup-conan:
     conan profile detect --force
     conan remote update conancenter --url="https://center2.conan.io"
 
-build-docker:
-    WORKSPACE_PREFIX="docker_" bin/build-locally.bash
-
-docker-build-example: generate-ros-dep-txt
-    docker compose -f docker/docker-compose.yml up --build
+docker-up-example: generate-ros-dep-txt
+    docker compose -f docker/docker-compose-example.yml up --build
 
 docker-up-telemetry:
     PROJECT_ROOT="{{invocation_directory()}}" docker compose -f telemetry_services/telemetry/signoz/docker/docker-compose.yaml up -d
-
-run-example-with-telemetry:
-    chmod +x bin/run-with-telemetry.bash
-    bin/run-with-telemetry.bash
 
 add-ros-python-package package path="src":
     @echo 'Adding a new python package {{ package }} in {{ path }}...'
@@ -41,7 +37,6 @@ add-ros-python-package package path="src":
     rm -rf {{ path }}/{{ package }}/test # default tests are garbage
     rm {{ path }}/{{ package }}/setup.py
     cp bin/templates/ros-setup-py.txt {{ path }}/{{ package }}/setup.py
-    # TODO: fix templating
     PROJECT_NAME={{ package }} envsubst < bin/templates/ros-pyproject-toml.txt > {{ path }}/{{ package }}/pyproject.toml
 
 add-ros-cpp-package package type="exe" path="src":

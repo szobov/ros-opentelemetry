@@ -42,7 +42,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=cache,target=/root/.conan2 \
     source /opt/ros/jazzy/setup.bash && \
     source /workspace/.venv/bin/activate && \
-    just setup-conan build-docker
+    just setup-conan build-in-docker
 
 RUN chown -R ${USER_UID}:${USER_GID} /workspace
 

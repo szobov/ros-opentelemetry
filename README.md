@@ -11,6 +11,6 @@
 * [x] Add `telemetry` package for python and ROS
 * [x] Add `signoz` setup
 * [x] make docker directory with Dockerfile/compose (no root container)
-* [] Script to automatically signin/login into signoz if required
+* [x] Script to automatically signin/login into signoz if required
 * [] Grafana setup alternative
 * [] Write README
