@@ -25,9 +25,18 @@ def generate_launch_description() -> LaunchDescription:
         output="screen",
     )
 
+    foxglove_bridge_node = Node(
+        package="foxglove_bridge",
+        executable="foxglove_bridge",
+        name="foxglove_bridge",
+        output="screen",
+        parameters=[{"port": 8765, "address": "0.0.0.0"}],
+    )
+
     return LaunchDescription(
         [
             robot_control_bringup,
             producer_node,
+            foxglove_bridge_node,
         ]
     )

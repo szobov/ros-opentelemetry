@@ -44,6 +44,8 @@
   <depend>moveit_ros_planning_interface</depend>
   <depend>rclcpp</depend>
 
+  <depend>foxglove_bridge</depend>
+
   <depend>robot_control_interface</depend>
 
   <depend>ros_opentelemetry_cpp</depend>

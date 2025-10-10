@@ -16,5 +16,16 @@ services:
       - "host.docker.internal:host-gateway"
     tty: true
     network_mode: bridge
+    ports:
+      - "8765:8765"
     volumes:
       - ../logs/ros:/workspace/docker_workspace/logs/ros:rw
+
+  lichtblick:
+    image: ghcr.io/lichtblick-suite/lichtblick:1.14.0
+    container_name: lichtblick
+    depends_on:
+      - example
+    ports:
+      - "4444:8080"
+    tty: true
