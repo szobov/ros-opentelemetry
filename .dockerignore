@@ -1,2 +1,6 @@
 local_workspace
 .venv
+.docker
+.venv
+telemetry_services
+logs
