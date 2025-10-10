@@ -1,12 +1,18 @@
 # ROS2 OpenTelemetry Integration Library
 
+A production-grade integration library for instrumenting ROS2 (Robot Operating System 2) applications with [OpenTelemetry](https://opentelemetry.io/) distributed tracing and observability capabilities. This project provides a comprehensive toolchain for building, deploying, and monitoring ROS2 workspaces with native OpenTelemetry support for both C++ and Python nodes.
+
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
 **Table of Contents**
 
 - [ROS2 OpenTelemetry Integration Library](#ros2-opentelemetry-integration-library)
   - [How to use this Library](#how-to-use-this-library)
     - [Installation](#installation)
+      - [Streamlined](#streamlined)
+      - [Classical](#classical)
     - [Instrumenting Code](#instrumenting-code)
+      - [Traces](#traces)
+      - [Logs](#logs)
   - [Architecture Overview](#architecture-overview)
   - [Example](#example)
     - [Just Command Runner](#just-command-runner)
@@ -17,21 +23,23 @@
 
 <!-- markdown-toc end -->
 
-
-A production-grade integration library for instrumenting ROS2 (Robot Operating System 2) applications with [OpenTelemetry](https://opentelemetry.io/) distributed tracing and observability capabilities. This project provides a comprehensive toolchain for building, deploying, and monitoring ROS2 workspaces with native OpenTelemetry support for both C++ and Python nodes.
-
-
 ## How to use this Library
 
 ### Installation
 
 There are two ways how you can use this library.
 
-First one, you utilize streamlined approach provided by this library:
+#### Streamlined
+
+You utilize streamlined approach provided by this library:
+
 You have to use `bin/build-locally.bash` to build your project together with this library. `build-locally.bash` install dependencies using `conan` and `uv` and then runs `colcon` in the `virtualenv` made by `uv`, so your python nodes have access to PyPI packages.
 If you switches to this method you'll be able using `conanfile.txt` and `pyproject.toml` files to manage your dependencies.
 
-Second one is you'll install opentelemetry-sdk yourself and build it together with the library.
+#### Classical
+
+You install [opentelemetry-sdk](https://opentelemetry.io/docs/languages/) yourself and build it together with the library.
+
 The tricky part is, there is no obvious ways to install PyPI packages so they're available in your ROS2 environment. Plus, for [opentelemetry-cpp](https://github.com/open-telemetry/opentelemetry-cpp/blob/main/INSTALL.md), you would need to follow the installation guide and build it yourself. If you choose this way you would need to add `ros_opentelemetry_py` or `ros_opentelemety_cpp` and `ros_opentelemety_interfaces` from `src/` to your ROS-workspace.
 
 ### Instrumenting Code
@@ -39,6 +47,8 @@ The tricky part is, there is no obvious ways to install PyPI packages so they're
 After you installation you need to instrument your code.
 
 OpenTelemetry provides an extensive [guidance](https://opentelemetry.io/docs/concepts/instrumentation/) on code instrumentation for both [C++](https://opentelemetry.io/docs/languages/cpp/instrumentation/) and [Python](https://opentelemetry.io/docs/languages/python/instrumentation/).
+
+#### Traces
 
 To make integrate it in your node you'd need to the following in C++:
 
@@ -132,6 +142,8 @@ and add it extract it in the other node:
 ```
 
 After this instrumentation the traces will be connected between two nodes.
+
+#### Logs
 
 To connect traces to the logs, you can use traced loggers:
 
