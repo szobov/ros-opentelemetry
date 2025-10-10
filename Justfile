@@ -27,9 +27,15 @@ setup-conan:
 
 docker-up-example: generate-ros-dep-txt
     docker compose -f docker/docker-compose-example.yml up --build
+    if ! python3 -m webbrowser http://localhost:4444 >/dev/null 2>&1; then \
+        echo "Open Lichtblick UI at http://localhost:4444"; \
+    fi
 
 docker-up-telemetry:
     PROJECT_ROOT="{{invocation_directory()}}" docker compose -f telemetry_services/telemetry/signoz/docker/docker-compose.yaml up -d
+    if ! python3 -m webbrowser http://localhost:8181 >/dev/null 2>&1; then \
+        echo "Open SigNoz UI at http://localhost:8181"; \
+    fi
 
 add-ros-python-package package path="src":
     @echo 'Adding a new python package {{ package }} in {{ path }}...'
