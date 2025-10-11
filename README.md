@@ -83,7 +83,7 @@ In C++:
 #include <opentelemetry/trace/scope.h>
 
 
-  auto tracer = opentelemetry::trace::Provider::GetTracerProvider()->GetTracer(
+auto tracer = opentelemetry::trace::Provider::GetTracerProvider()->GetTracer(
       "name_of_your_component");
 auto span = tracer->StartSpan("handleActionOrServiceOrOtherCallback");
 {
@@ -133,10 +133,10 @@ and add it extract it in the other node:
 ``` c++
 #include <opentelemetry/context/runtime_context.h>
 
-  const auto goal = goal_handle->get_goal();
-  auto extracted_ctx =
-      ros_opentelemetry_cpp::extract_trace_context(&goal->trace_metadata);
-  [[maybe_unused]] auto ctx_token =
+const auto goal = goal_handle->get_goal();
+auto extracted_ctx =
+ros_opentelemetry_cpp::extract_trace_context(&goal->trace_metadata);
+[[maybe_unused]] auto ctx_token =
       opentelemetry::context::RuntimeContext::Attach(extracted_ctx);
 
 ```
@@ -210,9 +210,15 @@ This library bridges the gap between ROS2's robotics-focused middleware and Open
 
 The library is backend-agnostic and can integrate with any OpenTelemetry-compatible observability platform. Example configurations are provided for SigNoz, with Grafana support planned for future releases.
 
+This project consist of three main packages:
+
+- [ros_opentelemetry_cpp](https://github.com/szobov/ros-opentelemetry/tree/main/src/ros_opentelemetry_cpp) -- C++ package providing a bridge between ROS2 and OpenTelemetry.
+- [ros_opentelemetry_py](https://github.com/szobov/ros-opentelemetry/tree/main/src/ros_opentelemetry_py/ros_opentelemetry_py) -- same, but for Python
+- [ros_opentelemetry_interfaces](https://github.com/szobov/ros-opentelemetry/tree/main/src/ros_opentelemetry_interfaces) -- ROS2 messages to propagate trace context.
+
 ## Example
 
-The library also provides a real world example, utilizing MoveIt2-based C++ RobotControl node and Python's TaskProducer.
+The library also provides a real world [example](https://github.com/szobov/ros-opentelemetry/tree/main/src/example), utilizing MoveIt2-based C++ RobotControl node and Python's TaskProducer.
 
 ### Just Command Runner
 
@@ -241,10 +247,13 @@ just setup-conan
 
 just build-locally
 
+# Update env variables with ROS2' required ones
+direnv reload
+
 # To run example telemetry setup
 just docker-up-telemetry
 
-# Run exampe
+# Run example
 just docker-up-example
 ```
 
@@ -254,4 +263,4 @@ Apache-2.0
 
 ## Contributing
 
-Contributions are welcome. Please ensure `just check` passes before submitting pull requests.
+Contributions are welcome, but keep it mind that this is the open-source project -- maintainer can accept or reject your changes. Please ensure `just check` passes before submitting pull requests.
