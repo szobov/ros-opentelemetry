@@ -208,7 +208,7 @@ This library bridges the gap between ROS2's robotics-focused middleware and Open
 - **OpenTelemetry SDK**: Industry-standard observability instrumentation for traces, metrics, and logs
 - **Conan 2.x**: C++ dependency management with reproducible builds
 
-The library is backend-agnostic and can integrate with any OpenTelemetry-compatible observability platform. Example configurations are provided for SigNoz, with Grafana support planned for future releases.
+The library is backend-agnostic and can integrate with any OpenTelemetry-compatible observability platform. Example configurations are provided for [SigNoz](https://github.com/SigNoz/signoz), with [Grafana](https://github.com/grafana/grafana) support planned for future releases.
 
 This project consist of three main packages:
 
