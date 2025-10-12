@@ -2,6 +2,8 @@
 
 A production-grade integration library for instrumenting ROS2 (Robot Operating System 2) applications with [OpenTelemetry](https://opentelemetry.io/) distributed tracing and observability capabilities. This project provides a comprehensive toolchain for building, deploying, and monitoring ROS2 workspaces with native OpenTelemetry support for both C++ and Python nodes.
 
+<img width="800" height="600" alt="Signoz x Lichtblick visualization" src="https://github.com/user-attachments/assets/c25c893a-0da9-4acf-a666-67f2e36e94e5" />
+
 <!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
 **Table of Contents**
 
@@ -27,30 +29,30 @@ A production-grade integration library for instrumenting ROS2 (Robot Operating S
 
 ### Installation
 
-There are two ways how you can use this library.
+There are two ways you can use this library.
 
 #### Streamlined
 
-You utilize streamlined approach provided by this library:
+You utilise the streamlined approach provided by this library:
 
-You have to use `bin/build-locally.bash` to build your project together with this library. `build-locally.bash` install dependencies using `conan` and `uv` and then runs `colcon` in the `virtualenv` made by `uv`, so your python nodes have access to PyPI packages.
-If you switches to this method you'll be able using `conanfile.txt` and `pyproject.toml` files to manage your dependencies.
+You have to use `bin/build-locally.bash` to build your project together with this library. [build-locally.bash](https://github.com/szobov/ros-opentelemetry/blob/main/bin/build-locally.bash) installs dependencies using `conan` and `uv`, and then runs `colcon` in the `virtualenv` made by `uv`, so your Python nodes have access to PyPI packages.
+If you switch to this method, you'll be able to use `conanfile.txt` and `pyproject.toml` files to manage your dependencies.
 
 #### Classical
 
 You install [opentelemetry-sdk](https://opentelemetry.io/docs/languages/) yourself and build it together with the library.
 
-The tricky part is, there is no obvious ways to install PyPI packages so they're available in your ROS2 environment. Plus, for [opentelemetry-cpp](https://github.com/open-telemetry/opentelemetry-cpp/blob/main/INSTALL.md), you would need to follow the installation guide and build it yourself. If you choose this way you would need to add `ros_opentelemetry_py` or `ros_opentelemety_cpp` and `ros_opentelemety_interfaces` from `src/` to your ROS-workspace.
+The tricky part is that there are no obvious ways to install PyPI packages so they're available in your ROS2 environment. Plus, for [opentelemetry-cpp](https://github.com/open-telemetry/opentelemetry-cpp/blob/main/INSTALL.md), you would need to follow the installation guide and build it yourself. If you choose this way, you would need to add `ros_opentelemetry_py` or `ros_opentelemetry_cpp` and `ros_opentelemetry_interfaces` from `src/` to your ROS workspace.
 
 ### Instrumenting Code
 
-After you installation you need to instrument your code.
+After your installation, you need to instrument your code.
 
 OpenTelemetry provides an extensive [guidance](https://opentelemetry.io/docs/concepts/instrumentation/) on code instrumentation for both [C++](https://opentelemetry.io/docs/languages/cpp/instrumentation/) and [Python](https://opentelemetry.io/docs/languages/python/instrumentation/).
 
 #### Traces
 
-To make integrate it in your node you'd need to the following in C++:
+To make it integrate into your node, you'd need to do the following code in C++:
 
 ``` c++
 #include "ros_opentelemetry_cpp/ros_opentelemetry_cpp.hpp"
@@ -65,7 +67,7 @@ In Python:
 
 from ros_opentelemetry_py import setup_tracer
 
-# somewhere on the start of your node
+# somewhere at the start of your node
 if __name__ == "__main__":
     # Expects environment variable OTLP_ENDPOINT set
     setup_tracer("robot_task_producer")
@@ -73,7 +75,7 @@ if __name__ == "__main__":
 
 That's the way you connect your [tracers](https://opentelemetry.io/docs/concepts/signals/traces/#tracer) to the [trace collector](https://opentelemetry.io/docs/collector/).
 
-After you can use standard opentelemetry tracers to trace your code.
+After that, you can use standard OpenTelemetry tracers to trace your code.
 In C++:
 
 ``` c++
@@ -106,9 +108,9 @@ def method_of_your_node(self, params):
     ...
 ```
 
-If you want to connect your nodes you'd need to propagate [Trace Context](https://opentelemetry.io/docs/concepts/signals/traces/#context-propagation).
+To connect your nodes, you need to propagate the [Trace Context](https://opentelemetry.io/docs/concepts/signals/traces/#context-propagation).
 
-For this you'd need to add `ros_opentelemetry_interfaces` to your `package.xml` for your message package.
+For this, you'd need to add `ros_opentelemetry_interfaces` to your `package.xml` for your message package.
 
 ``` xml
 
@@ -128,7 +130,7 @@ from ros_opentelemetry_py import inject_trace_context
 example_msg = ExampleActionMessage.Goal()
 example_msg.trace_metadata = inject_trace_context()
 ```
-and add it extract it in the other node:
+And add it, extract it in the other node:
 
 ``` c++
 #include <opentelemetry/context/runtime_context.h>
@@ -141,7 +143,7 @@ ros_opentelemetry_cpp::extract_trace_context(&goal->trace_metadata);
 
 ```
 
-After this instrumentation the traces will be connected between two nodes.
+After this instrumentation, the traces will be connected between two nodes.
 
 #### Logs
 
@@ -158,7 +160,7 @@ from ros_opentelemetry_py import wrap_logger
 self._traced_logger = wrap_logger(self.get_logger())
 ```
 
-and update the way you collect the logs in your otel-collector:
+And update the way you collect the logs in your otel-collector:
 For example:
 ``` yaml
 receivers:
@@ -198,7 +200,7 @@ receivers:
         field: attributes.span_id
 ```
 
-This way collected logs will be connected to the traces.
+This way, collected logs will be connected to the traces.
 
 ## Architecture Overview
 
@@ -210,7 +212,7 @@ This library bridges the gap between ROS2's robotics-focused middleware and Open
 
 The library is backend-agnostic and can integrate with any OpenTelemetry-compatible observability platform. Example configurations are provided for [SigNoz](https://github.com/SigNoz/signoz), with [Grafana](https://github.com/grafana/grafana) support planned for future releases.
 
-This project consist of three main packages:
+This project consists of three main packages:
 
 - [ros_opentelemetry_cpp](https://github.com/szobov/ros-opentelemetry/tree/main/src/ros_opentelemetry_cpp) -- C++ package providing a bridge between ROS2 and OpenTelemetry.
 - [ros_opentelemetry_py](https://github.com/szobov/ros-opentelemetry/tree/main/src/ros_opentelemetry_py/ros_opentelemetry_py) -- same, but for Python
@@ -218,11 +220,11 @@ This project consist of three main packages:
 
 ## Example
 
-The library also provides a real world [example](https://github.com/szobov/ros-opentelemetry/tree/main/src/example), utilizing MoveIt2-based C++ RobotControl node and Python's TaskProducer.
+The library also provides a real-world [example](https://github.com/szobov/ros-opentelemetry/tree/main/src/example), utilising MoveIt2-based C++ RobotControl node and Python's TaskProducer.
 
 ### Just Command Runner
 
-This project utilizes [Just](https://github.com/casey/just), a command runner that provides a unified interface for complex development workflows.
+This project utilises [Just](https://github.com/casey/just), a command runner that provides a unified interface for complex development workflows.
 
 Run `just --list` to see all available commands with descriptions.
 
@@ -240,7 +242,7 @@ Run `just --list` to see all available commands with descriptions.
 git clone https://github.com/szobov/ros-opentelemetry.git
 cd ros-opentelemetry
 
-# Allow direnv to operate environment variable
+# Allow direnv to operate on environment variables
 direnv allow .
 
 just setup-conan
@@ -257,10 +259,6 @@ just docker-up-telemetry
 just docker-up-example
 ```
 
-## License
-
-Apache-2.0
-
 ## Contributing
 
-Contributions are welcome, but keep it mind that this is the open-source project -- maintainer can accept or reject your changes. Please ensure `just check` passes before submitting pull requests.
+Contributions are welcome, but please note that this is an open-source project, and the maintainer reserves the right to accept or reject your changes. Please ensure `just check` passes before submitting pull requests.
