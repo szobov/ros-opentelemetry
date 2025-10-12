@@ -241,7 +241,11 @@ Run `just --list` to see all available commands with descriptions.
 # Clone repository
 git clone https://github.com/szobov/ros-opentelemetry.git
 cd ros-opentelemetry
+```
 
+To run the example locally:
+
+```bash
 # Allow direnv to operate on environment variables
 direnv allow .
 
@@ -255,9 +259,21 @@ direnv reload
 # To run example telemetry setup
 just docker-up-telemetry
 
+# run local example with rViz
+just run-example-locally
+```
+
+To run in Docker:
+
+```bash
+# To run example telemetry setup
+just docker-up-telemetry
+
 # Run example
 just docker-up-example
 ```
+
+https://github.com/user-attachments/assets/443e3542-cf8b-48e0-b720-0e8a008fdfec
 
 ## Contributing
 
