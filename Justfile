@@ -26,7 +26,7 @@ setup-conan:
     conan remote update conancenter --url="https://center2.conan.io"
 
 docker-up-example: generate-ros-dep-txt
-    docker compose -f docker/docker-compose-example.yml up --build
+    docker compose -f docker/docker-compose-example.yml up --build -d
     if ! python3 -m webbrowser http://localhost:4444 >/dev/null 2>&1; then \
         echo "Open Lichtblick UI at http://localhost:4444"; \
     fi
@@ -36,6 +36,9 @@ docker-up-telemetry:
     if ! python3 -m webbrowser http://localhost:8181 >/dev/null 2>&1; then \
         echo "Open SigNoz UI at http://localhost:8181"; \
     fi
+
+run-example-locally:
+    OTLP_ENDPOINT="localhost:4317" ros2 launch launch/bringup_with_producer.launch.py
 
 add-ros-python-package package path="src":
     @echo 'Adding a new python package {{ package }} in {{ path }}...'
