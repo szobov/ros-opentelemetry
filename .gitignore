@@ -1,6 +1,5 @@
 CMakeUserPresets.json
 logs/
-rosdep-deps.txt
 
 ### C++ ###
 # Prerequisites
