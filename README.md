@@ -8,6 +8,9 @@ A production-grade integration library for instrumenting ROS2 (Robot Operating S
 **Table of Contents**
 
 - [ROS2 OpenTelemetry Integration Library](#ros2-opentelemetry-integration-library)
+  - [Example](#example)
+    - [Prerequisites to build locally](#prerequisites-to-build-locally)
+    - [Quick Start](#quick-start)
   - [How to use this Library](#how-to-use-this-library)
     - [Installation](#installation)
       - [Streamlined](#streamlined)
@@ -16,14 +19,61 @@ A production-grade integration library for instrumenting ROS2 (Robot Operating S
       - [Traces](#traces)
       - [Logs](#logs)
   - [Architecture Overview](#architecture-overview)
-  - [Example](#example)
-    - [Just Command Runner](#just-command-runner)
-    - [Prerequisites to build locally](#prerequisites-to-build-locally)
-    - [Quick Start](#quick-start)
-  - [License](#license)
   - [Contributing](#contributing)
 
 <!-- markdown-toc end -->
+
+## Example
+
+The library also provides a real-world [example](https://github.com/szobov/ros-opentelemetry/tree/main/src/example), utilising MoveIt2-based C++ RobotControl node and Python's TaskProducer.
+
+### Prerequisites to build locally
+
+- [ROS2](https://docs.ros.org/en/rolling/Installation.html)
+- [Just](https://just.systems/man/en/packages.html)
+- [uv](https://docs.astral.sh/uv/getting-started/installation/)
+- [direnv](https://direnv.net/docs/installation.html)
+
+### Quick Start
+
+```bash
+# Clone repository
+git clone https://github.com/szobov/ros-opentelemetry.git
+cd ros-opentelemetry
+```
+To run in Docker:
+
+https://github.com/user-attachments/assets/443e3542-cf8b-48e0-b720-0e8a008fdfec
+
+```bash
+# To run example telemetry setup
+just docker-up-telemetry
+
+# Run example
+just docker-up-example
+```
+
+To run the example locally:
+
+https://github.com/user-attachments/assets/7fb0ff5d-9490-4b4d-8ae6-4f233c552e58
+
+```bash
+# Allow direnv to operate on environment variables
+direnv allow .
+
+just setup-conan
+
+just build-locally
+
+# Update env variables with ROS2' required ones
+direnv reload
+
+# To run example telemetry setup (or do not run if your didn't stop it from previous example)
+just docker-up-telemetry
+
+# run local example with rViz
+just run-example-locally
+```
 
 ## How to use this Library
 
@@ -33,10 +83,8 @@ There are two ways you can use this library.
 
 #### Streamlined
 
-You utilise the streamlined approach provided by this library:
-
-You have to use `bin/build-locally.bash` to build your project together with this library. [build-locally.bash](https://github.com/szobov/ros-opentelemetry/blob/main/bin/build-locally.bash) installs dependencies using `conan` and `uv`, and then runs `colcon` in the `virtualenv` made by `uv`, so your Python nodes have access to PyPI packages.
-If you switch to this method, you'll be able to use `conanfile.txt` and `pyproject.toml` files to manage your dependencies.
+You can directly look into [example](#example) the toolkit is setup. The most of the magic happends inside [build-locally.bash](https://github.com/szobov/ros-opentelemetry/blob/main/bin/build-locally.bash). It builds your project together with this library and  installs dependencies using `conan` and `uv`, and then runs `colcon` in the `virtualenv` made by `uv`, so your Python nodes have access to PyPI packages.
+If you switch to this method, you'll be able to use `conanfile.txt` and `pyproject.toml` files to manage your dependencies without the installation hussle.
 
 #### Classical
 
@@ -217,61 +265,6 @@ This project consists of three main packages:
 - [ros_opentelemetry_cpp](https://github.com/szobov/ros-opentelemetry/tree/main/src/ros_opentelemetry_cpp) -- C++ package providing a bridge between ROS2 and OpenTelemetry.
 - [ros_opentelemetry_py](https://github.com/szobov/ros-opentelemetry/tree/main/src/ros_opentelemetry_py/ros_opentelemetry_py) -- same, but for Python
 - [ros_opentelemetry_interfaces](https://github.com/szobov/ros-opentelemetry/tree/main/src/ros_opentelemetry_interfaces) -- ROS2 messages to propagate trace context.
-
-## Example
-
-The library also provides a real-world [example](https://github.com/szobov/ros-opentelemetry/tree/main/src/example), utilising MoveIt2-based C++ RobotControl node and Python's TaskProducer.
-
-### Just Command Runner
-
-This project utilises [Just](https://github.com/casey/just), a command runner that provides a unified interface for complex development workflows.
-
-Run `just --list` to see all available commands with descriptions.
-
-### Prerequisites to build locally
-
-- [ROS2](https://docs.ros.org/en/rolling/Installation.html)
-- [Just](https://just.systems/man/en/packages.html)
-- [uv](https://docs.astral.sh/uv/getting-started/installation/)
-- [direnv](https://direnv.net/docs/installation.html)
-
-### Quick Start
-
-```bash
-# Clone repository
-git clone https://github.com/szobov/ros-opentelemetry.git
-cd ros-opentelemetry
-```
-To run in Docker:
-```bash
-# To run example telemetry setup
-just docker-up-telemetry
-
-# Run example
-just docker-up-example
-```
-https://github.com/user-attachments/assets/443e3542-cf8b-48e0-b720-0e8a008fdfec
-
-To run the example locally:
-
-```bash
-# Allow direnv to operate on environment variables
-direnv allow .
-
-just setup-conan
-
-just build-locally
-
-# Update env variables with ROS2' required ones
-direnv reload
-
-# To run example telemetry setup (or do not run if your didn't stop it from previous example)
-just docker-up-telemetry
-
-# run local example with rViz
-just run-example-locally
-```
-https://github.com/user-attachments/assets/7fb0ff5d-9490-4b4d-8ae6-4f233c552e58
 
 ## Contributing
 
